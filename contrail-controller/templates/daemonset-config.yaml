@@ -36,8 +36,10 @@ spec:
         effect: NoSchedule
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
+{{- if .Values.global.images.imageCredentials }}
       imagePullSecrets:
         - name: contrail-controller-docker-secret
+{{- end }}
       initContainers:
 {{ tuple $context $dependencies nil | include "helm-toolkit.snippets.kubernetes_entrypoint_init_container" | indent 8 }}
         - name: contrail-node-init
