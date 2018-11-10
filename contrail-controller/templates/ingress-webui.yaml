@@ -16,7 +16,7 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ .Values.ingress.webui_host }}.contrail.svc.cluster.local
+    - {{ .Values.ingress.webui_host }}.contrail.svc.{{ .Values.endpoints.cluster_domain_suffix }}
     - {{ .Values.ingress.webui_host }}.contrail
     - {{ .Values.ingress.webui_host }}
   rules:
@@ -34,7 +34,7 @@ spec:
           serviceName: contrail-web-controller
           servicePort: https
         path: /
-  - host: {{ .Values.ingress.webui_host }}.{{ .Release.Namespace }}.svc.cluster.local
+  - host: {{ .Values.ingress.webui_host }}.{{ .Release.Namespace }}.svc.{{ .Values.endpoints.cluster_domain_suffix }}
     http:
       paths:
       - backend:
