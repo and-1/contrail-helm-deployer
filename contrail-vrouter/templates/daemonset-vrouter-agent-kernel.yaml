@@ -146,10 +146,10 @@ spec:
             secretKeyRef:
               name: {{ .Values.secrets.keystone.admin }}
               key: KEYSTONE_AUTH_ADMIN_PASSWORD
-        lifecycle:
-          preStop:
-            exec:
-              command: ["/clean-up.sh"]
+#        lifecycle:
+#          preStop:
+#            exec:
+#              command: ["/clean-up.sh"]
         volumeMounts:
 {{- if eq $host_os "centos"}}
         - mountPath: /etc/sysconfig/network-scripts
