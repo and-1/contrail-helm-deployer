@@ -3,11 +3,24 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
+{{- if .Values.ingress.ext_suffix }}
+    kubernetes.io/ingress.class: nginx-cluster
+{{- else }}
     kubernetes.io/ingress.class: nginx
+{{- end }}
     nginx.ingress.kubernetes.io/rewrite-target: /
   name: contrail-config-api
 spec:
   rules:
+{{- if .Values.ingress.ext_suffix }}
+  - host: {{ .Values.ingress.config_api_host }}{{.Values.ingress.ext_suffix}}
+    http:
+      paths:
+      - backend:
+          serviceName: config-api-server
+          servicePort: api
+        path: /
+{{- else }}
   - host: {{ .Values.ingress.config_api_host }}
     http:
       paths:
@@ -29,4 +42,5 @@ spec:
           serviceName: config-api-server
           servicePort: api
         path: /
+{{- end }}
 {{- end }}

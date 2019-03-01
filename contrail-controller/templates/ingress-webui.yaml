@@ -16,10 +16,23 @@ metadata:
 spec:
   tls:
   - hosts:
+{{- if .Values.ingress.ext_suffix }}
+    - {{ .Values.ingress.webui_host }}{{.Values.ingress.ext_suffix}}
+{{- else }}
     - {{ .Values.ingress.webui_host }}.contrail.svc.{{ .Values.endpoints.cluster_domain_suffix }}
     - {{ .Values.ingress.webui_host }}.contrail
     - {{ .Values.ingress.webui_host }}
+{{- end }}
   rules:
+{{- if .Values.ingress.ext_suffix }}
+  - host: {{ .Values.ingress.webui_host }}{{.Values.ingress.ext_suffix}}
+    http:
+      paths:
+      - backend:
+          serviceName: contrail-web-controller
+          servicePort: https
+        path: /
+{{- else }}
   - host: {{ .Values.ingress.webui_host }}
     http:
       paths:
@@ -41,4 +54,5 @@ spec:
           serviceName: contrail-web-controller
           servicePort: https
         path: /
+{{- end }}
 {{- end }}
